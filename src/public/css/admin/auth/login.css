@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-size: 30px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 90%;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.form__error {
+    display: block;
+    margin-bottom: 5px;
+    color: red;
+}
+
+.submit-btn {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 90%;
+}
+
+.submit-btn:hover {
+    background-color: #5e5b5b;
+}
+
+.register-link {
+    color: #007bff;
+    text-decoration: none;
+    /* 下線を消す */
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+    /* ホバー時に下線を追加 */
+}
+
+/* メディアクエリ: タブレット */
+@media (min-width: 768px) and (max-width: 850px) {
+    .container {
+        max-width: 600px;
+        /* タブレット用に幅を変更 */
+        padding: 30px;
+        /* パディングを追加 */
+    }
+
+    h1 {
+        font-size: 1.5em;
+        /* タブレット用に文字サイズを調整 */
+    }
+}
+
+/* メディアクエリ: PC */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .container {
+        max-width: 800px;
+        /* PC用に幅をさらに広く設定 */
+        padding: 40px;
+        /* パディングを追加 */
+    }
+
+    h1 {
+        font-size: 2em;
+        /* PC用に文字サイズを調整 */
+    }
+}

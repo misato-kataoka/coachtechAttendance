@@ -1,0 +1,99 @@
+.header {
+    background: #000;
+    padding: 10px 20px;
+    max-width: 100%;
+}
+
+.header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-utilities {
+    display: flex;
+    align-items: center;
+}
+
+.header__logo {
+    display: flex;
+    max-width: 300px;
+    align-items: center;
+}
+
+.header__logo img {
+    max-height: 30px;
+    margin-left: 10px;
+}
+
+.header-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.header-nav li {
+    margin-left: 20px;
+}
+
+.header-nav__link {
+    margin-left: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.header-nav__link:hover {
+    color: rgb(238, 201, 201);
+    /* ホバー時の文字色 */
+}
+
+.header-nav__button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.header-nav__button:hover {
+    background-color: rgb(238, 201, 201);
+    /* ホバー時の背景色 */
+}
+
+@media (max-width: 850px) {
+    .header__inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header__logo {
+        margin-bottom: 10px;
+    }
+
+    .search {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .search input[type="text"] {
+        width: calc(100% - 20px);
+    }
+
+    .header-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .header-nav li {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}

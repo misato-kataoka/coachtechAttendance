@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.container {
+    padding: 2em;
+    text-align: center;
+    width: 900px;
+    margin: 0 auto;
+}
+
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .container {
+        width: 80%;
+        /* 1400px以上1540px未満の時の幅 */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .container {
+        width: 90%;
+        /* タブレット用の幅 */
+    }
+}
+
+h1 {
+    margin-bottom: 1.5em;
+    font-size: 30px;
+}
+
+.form-group {
+    margin-bottom: 1em;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    height: 40px;
+    padding: 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.form__error {
+    display: block;
+    margin-bottom: 5px;
+    color: red;
+}
+
+.submit-btn {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    padding: 0.75em;
+    margin: 30px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+}
+
+.submit-btn:hover {
+    background-color: #5e5b5b;
+}
+
+.login-link a {
+    color: #007bff;
+    text-decoration: none;
+    /* 下線を消す */
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+    /* ホバー時に下線を追加 */
+}
