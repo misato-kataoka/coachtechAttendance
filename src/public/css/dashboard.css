@@ -1,0 +1,89 @@
+.attendance-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.attendance-status {
+    margin-top: 60px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    width: 70px;
+    background-color: rgb(203, 201, 201);
+    border-radius: 15px;
+    color: rgb(127, 126, 126);
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30px;
+    line-height: 30px;
+}
+
+.attendance-clock {
+    padding: 40px;
+    margin-bottom: 40px;
+}
+
+#current-date {
+    font-size: 35px;
+    color: black;
+    margin: 0;
+}
+
+#current-time {
+    font-size: 60px;
+    font-weight: bold;
+    color: black;
+    margin: 5px 0 0 0;
+    letter-spacing: 2px;
+}
+
+.attendance-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+.attendance-form {
+    margin: 0;
+    padding: 0;
+    display: contents;
+}
+
+.attendance-button {
+    width: 200px;
+    padding: 20px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.attendance-button:hover {
+    background-color: rgb(144, 141, 141);
+}
+
+.button-break {
+    background-color: white;
+    color: black;
+    border: none;
+}
+
+.button-break:hover {
+    background-color: rgb(199, 224, 247);
+}
+
+.thank-you-message {
+    font-size: 20px;
+    color: black;
+    grid-column: 1 / -1;
+}
