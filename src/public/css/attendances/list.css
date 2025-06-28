@@ -1,0 +1,163 @@
+.attendance-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    max-width: 72rem;
+    /* 1152px */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1rem;
+    /* 上下 32px, 左右 16px */
+}
+
+/* 画面幅に応じた左右の余白調整 */
+@media (min-width: 640px) {
+    .attendance-container {
+        padding-left: 1.5rem;
+        /* 24px */
+        padding-right: 1.5rem;
+        /* 24px */
+    }
+}
+
+@media (min-width: 1024px) {
+    .attendance-container {
+        padding-left: 2rem;
+        /* 32px */
+        padding-right: 2rem;
+        /* 32px */
+    }
+}
+
+/* --- ページタイトル --- */
+.attendance-title {
+    
+    font-size: 1.5rem;
+    /* 24px */
+    line-height: 2rem;
+    /* 32px */
+    font-weight: 700;
+    /* bold */
+    color: rgb(31 41 55);
+    margin-bottom: 1.5rem;
+    /* 24px */
+}
+
+/* --- 月ナビゲーション --- */
+.month-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 80%;
+    background-color: white;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    /* 24px */
+}
+
+.month-nav-link {
+    font-size: 1.125rem;
+    /* 18px */
+    color: rgb(37 99 235);
+    font-weight: 600;
+    /* semibold */
+}
+
+.month-nav-link:hover {
+    color: rgb(29 78 216);
+}
+
+.current-month-display {
+    font-size: 1.25rem;
+    /* 20px */
+    font-weight: 700;
+    /* bold */
+    color: rgb(55 65 81);
+}
+
+.attendance-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    /* 8px */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* 画面幅に応じたテーブルの幅調整 */
+@media (min-width: 1024px) {
+    .attendance-table-wrapper {
+        width: 83.333333%;
+        /* w-5/6 */
+    }
+}
+
+@media (min-width: 1280px) {
+    .attendance-table-wrapper {
+        width: 80%;
+        /* w-4/5 */
+    }
+}
+
+.attendance-table {
+    width: 100%;
+    text-align: center;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-header {
+    padding: 0.75rem 1.25rem;
+    /* py-3 px-5 */
+    text-align: center;
+    font-size: 0.75rem;
+    /* 12px */
+    font-weight: 600;
+    /* semibold */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: #f8fafc;
+    color: #64748b;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.table-cell {
+    padding: 1.25rem;
+    /* px-5 py-5 */
+    font-size: 0.875rem;
+    /* 14px */
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.cell-text {
+    white-space: nowrap;
+    color: #1f2937;
+}
+
+.attendance-table thead th:first-child {
+    border-top-left-radius: 0.5rem;
+    /* 8px */
+}
+
+.attendance-table thead th:last-child {
+    border-top-right-radius: 0.5rem;
+    /* 8px */
+}
+
+.attendance-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.5rem;
+    /* 8px */
+}
+
+.attendance-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.5rem;
+    /* 8px */
+}
+
+/* 最後の行の下線を削除 */
+.attendance-table tbody tr:last-child td {
+    border-bottom-width: 0;
+}

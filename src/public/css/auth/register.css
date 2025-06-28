@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    background-color: white;
 }
 
 .container {
@@ -56,10 +57,12 @@ input {
 }
 
 .submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: black;
     color: white;
     font-size: 20px;
-    padding: 0.75em;
     margin: 30px 0;
     border: none;
     border-radius: 4px;

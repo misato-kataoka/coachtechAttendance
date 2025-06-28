@@ -87,3 +87,33 @@
     color: black;
     grid-column: 1 / -1;
 }
+
+/* メディアクエリ: タブレット */
+@media (min-width: 768px) and (max-width: 850px) {
+    .container {
+        max-width: 600px;
+        /* タブレット用に幅を変更 */
+        padding: 30px;
+        /* パディングを追加 */
+    }
+
+    h1 {
+        font-size: 1.5em;
+        /* タブレット用に文字サイズを調整 */
+    }
+}
+
+/* メディアクエリ: PC */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .container {
+        max-width: 800px;
+        /* PC用に幅をさらに広く設定 */
+        padding: 40px;
+        /* パディングを追加 */
+    }
+
+    h1 {
+        font-size: 2em;
+        /* PC用に文字サイズを調整 */
+    }
+}

@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 //会員登録画面のルート
 Route::get('/register', [RegisterController::class, 'create'])->name('register.form');
-Route::post('/register', [RegisterController::class, 'register'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
 // ログインページのルート
 Route::get('/login', [AuthController::class, 'store'])->name('login');
@@ -34,4 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/attendance/end', [AttendanceController::class, 'end'])->name('attendance.end');
     Route::post('/break/start', [AttendanceController::class, 'breakStart'])->name('break.start');
     Route::post('/break/end', [AttendanceController::class, 'breakEnd'])->name('break.end');
+});
+
+//勤怠一覧画面へのルート
+Route::middleware('auth')->group(function () {
+    Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
+    Route::get('/attendance/{attendance}', [AttendanceController::class, 'show'])->name('attendance.show');
 });

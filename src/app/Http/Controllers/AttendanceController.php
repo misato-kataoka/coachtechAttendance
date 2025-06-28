@@ -22,8 +22,8 @@ class AttendanceController extends Controller
 
         if ($latestAttendance) {
             if ($latestAttendance->start_time && !$latestAttendance->end_time) {
-                $latestBreak = $latestAttendance->rests()->latest()->first();
-                if ($latestBreak && $latestBreak->start_time && !$latestBreak->end_time) {
+                $latestRest = $latestAttendance->rests()->latest()->first();
+                if ($latestRest && $latestRest->start_time && !$latestRest->end_time) {
                     $status = '休憩中';
                 } else {
                     $status = '勤務中';
@@ -68,16 +68,16 @@ class AttendanceController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function breakStart(Request $request)
+    public function restStart(Request $request)
     {
         $user = Auth::user();
 
         $attendance = Attendance::where('user_id', $user->id)->whereNull('end_time')->first();
 
         if ($attendance) {
-            $existingBreak = $attendance->rests()->whereNull('end_time')->exists();
+            $existingRest = $attendance->rests()->whereNull('end_time')->exists();
 
-            if(!$existingBreak) {
+            if(!$existingRest) {
                 Rest::create([
                     'attendance_id' => $attendance->id,
                     'start_time' => Carbon::now(),
@@ -87,21 +87,56 @@ class AttendanceController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function breakEnd(Request $request)
+    public function restEnd(Request $request)
     {
         $user = Auth::user();
 
         $attendance = Attendance::where('user_id', $user->id)->whereNull('end_time')->first();
 
         if ($attendance) {
-            $latestBreak = $attendance->rests()->whereNull('end_time')->latest()->first();
+            $latestRest = $attendance->rests()->whereNull('end_time')->latest()->first();
 
-            if ($latestBreak) {
-                $latestBreak->update([
+            if ($latestRest) {
+                $latestRest->update([
                     'end_time' => Carbon::now(),
                 ]);
             }
         }
         return redirect()->route('dashboard');
+    }
+
+    public function list(Request $request)
+    {
+        $year = $request->input('year', Carbon::now()->year);
+        $month = $request->input('month', Carbon::now()->month);
+
+        $targetDate = Carbon::createFromDate($year, $month, 1);
+
+        $displayMonth = $targetDate->format('Y年m月');
+
+        $prevMonth = $targetDate->copy()->subMonth();
+        $nextMonth = $targetDate->copy()->addMonth();
+
+        $attendances = Attendance::with('rests')
+            ->where('user_id', Auth::id())
+            ->whereYear('work_date', $year)
+            ->whereMonth('work_date', $month)
+            ->orderBy('work_date', 'asc')
+            ->get();
+
+        return view('attendances.list', compact(
+            'attendances',
+            'year',
+            'month'
+        ));
+    }
+
+    public function show(Attendance $attendance)
+    {
+        if ($attendance->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('attendances.show', compact('attendance'));
     }
 }
