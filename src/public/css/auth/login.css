@@ -64,7 +64,6 @@ input[type="password"] {
 .register-link {
     color: #007bff;
     text-decoration: none;
-    /* 下線を消す */
 }
 
 .register-link a:hover {
