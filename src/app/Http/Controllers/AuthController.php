@@ -8,28 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    //public function store(){
-        /*$user=User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password)
-        ]);
-        event(new Registered($user));
-        Auth::login($user);*/
-
-        //if (Auth::check()) {
-         //   return redirect('/attendance');
-        //}
-
-       //return view('auth.login');
-    //}
-
     public function index()
     {
         return view('index');
     }
 
-    public function loginUser(LoginRequest $request)
+    public function create()
+    {
+        return view('auth.login');
+    }
+
+    public function store(LoginRequest $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],

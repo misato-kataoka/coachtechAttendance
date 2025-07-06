@@ -24,8 +24,8 @@ Route::get('/register', [RegisterController::class, 'create'])->name('register.f
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
 // ログインページのルート
-Route::get('/login', [AuthController::class, 'store'])->name('login');
-Route::post('/login', [AuthController::class, 'loginUser']);
+Route::get('/login', [AuthController::class, 'create'])->name('login');
+Route::post('/login', [AuthController::class, 'store']);
 
 //勤怠登録画面へのルート
 Route::middleware('auth')->group(function () {
@@ -39,5 +39,11 @@ Route::middleware('auth')->group(function () {
 //勤怠一覧画面へのルート
 Route::middleware('auth')->group(function () {
     Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
-    Route::get('/attendance/{attendance}', [AttendanceController::class, 'show'])->name('attendance.show');
+    //Route::get('/attendance/{attendance}', [AttendanceController::class, 'show'])->name('attendance.show');
+});
+
+//勤怠詳細画面へのルート
+Route::middleware('auth')->group(function () {
+    Route::get('/attendance/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
+    Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
 });
