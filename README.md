@@ -25,8 +25,6 @@
   DB_USERNAME=laravel_user
   DB_PASSWORD=laravel_pass
 
-STRIPE_KEY=pk_test_51RRVovH1ap6ABKzgQAn4S9wxQIN0slhHLU6AmiciLYL1NG0iR0vRSuk3iSDOxMJtMUYC7jzahEJXpQgCHrsGKZia00awOr9IHV
-STRIPE_SECRET=sk_test_51RRVovH1ap6ABKzg5R9B8ykI65tfvTttnAGKPKddAWvG606XMgkbXmRNJOHWkOzt0zkOs5RAUIOyzPPN0Zf6c9aN00YKUK6lCC
 ```
 4. docker compose exec php bash
 
@@ -42,13 +40,26 @@ STRIPE_SECRET=sk_test_51RRVovH1ap6ABKzg5R9B8ykI65tfvTttnAGKPKddAWvG606XMgkbXmRNJ
 ```
   php artisan db:seed
 ```
+## メール認証
+mailtrapを使用しています。
+以下のリンクから会員登録をしてください。　
+https://mailtrap.io/
+
+Sandbox内のIntegrationから「laravel 7.x and 8.x」を選択し、
+.envファイルのMAIL_MAILERからMAIL_ENCRYPTIONまでの項目をコピー＆ペーストしてください。　
+MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください。
 
 ## ER図
 
 
-## テストユーザー
-* **Email:** 'testuser@example.com'
+## テストアカウント
+* **名前:** '西　玲奈'
+* **Email:** 'reina.n@coachtech.com'
 * **password:** 'password123'
+
+* **名前:** '山田　太郎'
+* **Email:** 'tarou.y@coachtech.com'
+* **password:** 'password456'
 
 ## 使用技術
 
