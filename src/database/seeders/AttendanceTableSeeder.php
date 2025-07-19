@@ -18,61 +18,86 @@ class AttendanceTableSeeder extends Seeder
      */
     public function run()
     {
+        // 外部キー制約を一時的に無効化し、テーブルを空にする
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Attendance::truncate();
         DB::table('rests')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $user = User::find(1);
-        if (!$user) {
-            $this->command->info('User with ID:1 not found. Seeder will be skipped.');
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-            return;
-        }
-
+        // --- 設定項目 ---
+        $userIds = range(2, 7);
         $period = CarbonPeriod::create('2025-03-01', '2025-06-30');
+        // ----------------
 
-        foreach ($period as $date) {
-            if ($date->isSaturday() || $date->isSunday()) {
+        $this->command->info('Starting Attendance and Rest data seeding...');
+
+        foreach ($userIds as $userId) {
+            $user = User::find($userId);
+
+            if (!$user) {
+                $this->command->warn("User with ID: {$userId} not found. Seeding will be skipped for this user.");
                 continue;
             }
 
-            $startTime = $date->copy()->setTime(7, 30, 0)->addMinutes(rand(0, 150));
-            $endTime = $date->copy()->setTime(16, 30, 0)->addMinutes(rand(0, 210));
+            $this->command->info("Processing data for User: {$user->name} (ID: {$userId})");
 
-            $attendance = Attendance::create([
-                'user_id' => $user->id,
-                'work_date' => $date->toDateString(),
-                'start_time' => $startTime,
-                'end_time' => $endTime,
-            ]);
+            $currentWeek = -1;
+            $offDays = [];
 
-            // 休憩時間（30分〜90分）を秒で生成
-            $totalRestSeconds = rand(30, 90) * 60;
-            // 勤務時間（秒）から休憩時間を引いて、休憩が開始できる時間範囲を計算
-            $workSeconds = $startTime->diffInSeconds($endTime);
-            $possibleRestStartRange = $workSeconds - $totalRestSeconds;
+            foreach ($period as $date) {
+                if ($date->weekOfYear !== $currentWeek) {
+                    $currentWeek = $date->weekOfYear;
+                    $daysOfWeek = range(0, 6);
+                    shuffle($daysOfWeek);
+                    $offDays = array_slice($daysOfWeek, 0, 2);
+                }
 
-            // 勤務時間内に休憩が収まる場合のみ記録
-            if ($possibleRestStartRange > 0) {
+                if (in_array($date->dayOfWeek, $offDays)) {
+                    continue;
+                }
 
-                $restStartOffset = rand(0, $possibleRestStartRange);
-                // 休憩開始・終了時刻を計算
-                $restStartTime = $startTime->copy()->addSeconds($restStartOffset);
-                $restEndTime = $restStartTime->copy()->addSeconds($totalRestSeconds);
+                // 勤務開始・終了時刻をランダムに設定（addMinutesを使っているので元々分単位）
+                $startTime = $date->copy()->setTime(7, 30, 0)->addMinutes(rand(0, 150));
+                $endTime = $date->copy()->setTime(16, 30, 0)->addMinutes(rand(0, 210));
 
-                // 休憩記録を作成
-                DB::table('rests')->insert([
-                    'attendance_id' => $attendance->id,
-                    'start_time' => $restStartTime,
-                    'end_time' => $restEndTime,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                $attendance = Attendance::create([
+                    'user_id' => $user->id,
+                    'work_date' => $date->toDateString(),
+                    'start_time' => $startTime,
+                    'end_time' => $endTime,
                 ]);
+
+                // ▼▼▼ ここから休憩時間の計算ロジックを「分単位」に修正しました ▼▼▼
+
+                // 休憩時間（30分〜90分）を「分」で生成
+                $totalRestMinutes = rand(30, 90);
+                // 勤務時間を「分」で計算
+                $workMinutes = $startTime->diffInMinutes($endTime);
+                // 休憩が開始できる時間範囲を「分」で計算
+                $possibleRestStartRangeInMinutes = $workMinutes - $totalRestMinutes;
+
+                // 勤務時間内に休憩が収まる場合のみ記録
+                if ($possibleRestStartRangeInMinutes > 0) {
+                    // 休憩開始までのオフセット（ずれ）を「分」でランダムに決定
+                    $restStartOffsetInMinutes = rand(0, $possibleRestStartRangeInMinutes);
+
+                    // 休憩開始・終了時刻を計算
+                    $restStartTime = $startTime->copy()->addMinutes($restStartOffsetInMinutes);
+                    $restEndTime = $restStartTime->copy()->addMinutes($totalRestMinutes);
+
+                    // 休憩記録を作成
+                    DB::table('rests')->insert([
+                        'attendance_id' => $attendance->id,
+                        'start_time' => $restStartTime,
+                        'end_time' => $restEndTime,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+                // ▲▲▲ 休憩時間の計算ロジック修正ここまで ▲▲▲
             }
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        $this->command->info('Attendance and Rest data for user_id:1 have been created for 4 months.');
+        $this->command->info('Seeding of Attendance and Rest data has been completed!');
     }
 }

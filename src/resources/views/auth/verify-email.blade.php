@@ -12,34 +12,9 @@
             メール認証を完了してください。
         </p>
 
-        @php
-            // ログイン中のユーザーのメールアドレスを取得
-            $email = Auth::user()->email;
-            // '@'で分割してドメイン部分を取得
-            $domain = explode('@', $email)[1];
-
-            // 主要なメールドメインと、そのURLを対応付ける配列
-            $mailServices = [
-                'gmail.com' => 'https://mail.google.com/',
-                'yahoo.co.jp' => 'https://mail.yahoo.co.jp/',
-                'yahoo.com' => 'https://mail.yahoo.com/',
-                'outlook.com' => 'https://outlook.live.com/',
-                'outlook.jp' => 'https://outlook.live.com/',
-                'hotmail.com' => 'https://outlook.live.com/',
-                'live.jp' => 'https://outlook.live.com/',
-                'icloud.com' => 'https://www.icloud.com/mail',
-            ];
-
-            // ユーザーのドメインが配列に存在する場合、そのURLを取得
-            $link = isset($mailServices[$domain]) ? $mailServices[$domain] : null;
-        @endphp
-
-        {{-- もしリンク先が特定できた場合のみ、ボタンを表示する --}}
-        @if ($link)
-            <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="verification-button-link">
-                <button type="button" class="verification-button">認証はこちらから</button>
-            </a>
-        @endif
+        <a href="https://mailtrap.io/inboxes" target="_blank" rel="noopener noreferrer" class="verification-button-link">
+            <button type="button" class="verification-button">認証はこちらから</button>
+        </a>
 
         @if (session('message'))
             <div class="session-message">

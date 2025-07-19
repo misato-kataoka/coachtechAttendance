@@ -1,0 +1,174 @@
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    /* 上下に余白を持たせ、左右中央に配置 */
+    padding: 0;
+    background-color: transparent;
+}
+
+/* === 「勤怠管理」のメインタイトル === */
+.header-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* === 新しい日付ナビゲーション（2025-07-19 更新） === */
+.date-navigation-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.date-nav-arrow {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px 25px;
+    border-radius: 5px;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.date-nav-arrow:hover {
+    background-color: #f0f0f0;
+}
+
+/* 中央の日付ピッカー全体 */
+.date-picker-container {
+    position: relative;
+    /* 透明なinputを重ねるための基準 */
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.date-picker-label {
+    cursor: pointer;
+}
+
+.date-picker-container .calendar-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+}
+
+.date-picker-display {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* 実際に日付を選択する透明な <input type="date"> */
+.date-picker-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    /* 完全な透明にして、見た目上は見えなくする */
+    cursor: pointer;
+}
+
+/* ブラウザが自動で表示するカレンダーアイコンを非表示にする（Chrome/Edge/Safari） */
+.date-picker-input::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.calendar-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+}
+
+/* === 勤怠テーブル === */
+.attendance-table {
+    width: 100%;
+}
+
+.table-cell {
+    max-width: 100%;
+    padding: 0.3rem 1.25rem;
+    /* px-5 py-5 */
+    font-size: 14px;
+    color: #6b6c6d;
+    font-weight: 400;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.cell-text {
+    white-space: nowrap;
+    color: #6b6c6d;
+    font-weight: 600;
+}
+
+.attendance-table thead th:first-child {
+    border-top-left-radius: 0.5rem;
+    /* 8px */
+}
+
+.attendance-table thead th:last-child {
+    border-top-right-radius: 0.5rem;
+    /* 8px */
+}
+
+.attendance-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.5rem;
+    /* 8px */
+}
+
+.attendance-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.5rem;
+    /* 8px */
+}
+
+/* 最後の行の下線を削除 */
+.attendance-table tbody tr:last-child td {
+    border-bottom-width: 0;
+}
+
+/* データがない場合のメッセージ */
+td[colspan="6"] {
+    padding: 60px 0;
+    text-align: center;
+    color: #888;
+}
+
+/* 詳細ボタン（リンク） */
+.detail__button-submit {
+    color: #007bff;
+    /* 青いリンク色 */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.detail__button-submit:hover {
+    text-decoration: underline;
+}
+
+/* 画面幅に応じた左右の余白調整 */
+@media (max-width: 850px) and(min-width: 768px) {
+    .attendance-container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+@media (max-width: 1540px) and(min-width: 1400px) {
+    .attendance-container {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}

@@ -16,7 +16,6 @@
             ←前月
         </a>
         <h3 class="current-month-display">
-            {{-- 画像ファイル名はご自身のものに合わせてください --}}
             <img src="{{ asset('storage/images/calendar.png') }}" alt="calendar" class="calendar-icon">
             <span>{{ $currentDate->format('Y/m') }}</span>
         </h3>
@@ -49,7 +48,7 @@
                             <td class="table-cell">{{ $day['totalRest'] }}</td>
                             <td class="table-cell">{{ $day['actualWork'] }}</td>
                             <td class="table-cell">
-                                <a href="{{ route('attendance.show', ['id' => $day['attendance']->id]) }}" class="detail__button-submit">詳細</a>
+                                <button class="detail__button-submit" type="button">詳細</button>
                             </td>
                         @else
                             {{-- 記録がない場合 --}}
@@ -58,7 +57,7 @@
                             <td class="table-cell">-</td>
                             <td class="table-cell">-</td>
                             <td class="table-cell">
-                                <span>詳細</span>
+                                <button class="detail__button-submit" type="button" disabled>詳細</button>
                             </td>
                         @endif
                     </tr>

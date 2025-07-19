@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
+use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -64,4 +67,42 @@ Route::middleware('auth', 'verified')->group(function () {
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/attendance/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
     Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+});
+
+//申請内容を保存するためのルート
+Route::post('/stamp_correction_request/store', [RequestController::class, 'store'])
+    ->middleware('auth')
+    ->name('request.store');
+
+//申請一覧ページのルート
+Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])
+    ->middleware('auth')
+    ->name('request.list');
+Route::get('/stamp_correction_request/{request_id}', [RequestController::class, 'show'])
+->middleware('auth')
+->name('request.show');
+
+//勤怠修正申請の承認ルート
+Route::post('/requests/{request}/approve', [RequestController::class, 'approve'])->name('request.approve');
+Route::post('/requests/{request}/reject', [RequestController::class, 'reject'])->name('request.reject');
+
+//【グループ1】管理者認証ルート
+Route::prefix('admin')->name('admin.')->group(function () {
+    // ログイン画面表示（GET /admin/login）-> admin.login
+    Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
+    // ログイン処理（POST /admin/login）
+    Route::post('/login', [AdminLoginController::class, 'login']);
+    // ログアウト処理（POST /admin/logout）-> admin.logout
+    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
+});
+
+
+//【グループ2】管理者向け勤怠管理ルート（要ログイン）
+Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // ▼▼▼ この行が最も重要です ▼▼▼
+    // 勤怠一覧ページ（GET /admin/attendance）-> admin.attendance.index という名前を付ける
+    Route::get('/attendance', [AdminAttendanceController::class, 'index'])->name('attendance.index');
+
+    // 勤怠詳細ページ（GET /admin/attendance/{attendance}）-> admin.attendance.show
+    Route::get('/attendance/{attendance}', [AdminAttendanceController::class, 'show'])->name('attendance.show');
 });

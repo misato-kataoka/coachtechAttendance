@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/auth/admin/login.css') }}">
+<link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
 @endsection
 
 @section('content')
     <div class="container">
         <h1>管理者ログイン</h1>
-            <form class="form" action="{{ route('login') }}" method="post">
+            <form class="form" action="{{ route('admin.login') }}" method="post">
             @csrf
                 <div class="form-group">
                     <label for="email">メールアドレス</label>
@@ -31,8 +31,5 @@
 
                 <button type="submit" class="submit-btn">管理者ログインする</button>
             </form>
-            <p class="register-link">
-                <a href="{{ route('register') }}">会員登録はこちら</a>
-            </p>
     </div>
 @endsection
