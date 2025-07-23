@@ -18,7 +18,6 @@ class Attendance extends Model
     ];
 
     /**
-     * ユーザー情報とのリレーション
      */
     public function user()
     {
@@ -26,17 +25,13 @@ class Attendance extends Model
     }
 
     /**
-     * 休憩時間(Rest)モデルとのリレーション
      */
     public function rests()
     {
         return $this->hasMany(Rest::class);
     }
 
-    // ▼▼▼ ここから下の計算ロジックを全面的に修正しました ▼▼▼
-
     /**
-     * 【内部計算用】合計休憩時間を「秒」で計算する
      *
      * @return int
      */
@@ -53,19 +48,23 @@ class Attendance extends Model
     }
 
     /**
-     * 【ビュー表示用】合計休憩時間を "HH:MM:SS" 形式で取得する
-     * (ビューの total_break_time_formatted から呼び出される)
      *
      * @return string
      */
     public function getTotalBreakTimeFormattedAttribute(): string
     {
-        // total_rest_seconds (上の関数) の結果を使ってフォーマットする
-        return gmdate('H:i:s', $this->total_rest_seconds);
+        $seconds = $this->total_rest_seconds;
+        if ($seconds <= 0) {
+            return '00:00';
+        }
+
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 
     /**
-     * 【内部計算用】実労働時間を「秒」で計算する
      *
      * @return int
      */
@@ -78,27 +77,31 @@ class Attendance extends Model
         $start = Carbon::parse($this->start_time);
         $end = Carbon::parse($this->end_time);
 
-        // 総勤務時間（秒）
         $totalWorkSeconds = $end->diffInSeconds($start);
 
-        // 総勤務時間（秒）から 合計休憩時間（秒）を引く
         $actualWorkSeconds = $totalWorkSeconds - $this->total_rest_seconds;
 
-        return max(0, $actualWorkSeconds); // マイナス表示防止
+        return max(0, $actualWorkSeconds);
     }
 
     /**
-     * 【ビュー表示用】実労働時間を "HH:MM:SS" 形式で取得する
-     * (ビューの total_work_time_formatted から呼び出される)
      *
      * @return string
      */
     public function getTotalWorkTimeFormattedAttribute(): string
     {
-        // actual_work_seconds (上の関数) の結果を使ってフォーマットする
-        return gmdate('H:i:s', $this->actual_work_seconds);
+        $seconds = $this->actual_work_seconds;
+
+        if ($seconds <= 0) {
+            return '00:00';
+        }
+
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
-    
+
     public function requests()
     {
         return $this->hasMany(Request::class);

@@ -94,15 +94,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/login', [AdminLoginController::class, 'login']);
     // ログアウト処理（POST /admin/logout）-> admin.logout
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
+    //スタッフ一覧表示
+    Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])->name('staff.index');
+    //選択スタッフの月別勤怠詳細表示
+    Route::get('/staff/{staff}', [App\Http\Controllers\Admin\StaffController::class, 'show'])->name('staff.show');
+    //勤怠CSV出力
+    Route::get('/staff/{staff}/export', [App\Http\Controllers\Admin\StaffController::class, 'exportCsv'])->name('staff.exportCsv');
 });
 
 
 //【グループ2】管理者向け勤怠管理ルート（要ログイン）
 Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
-    // ▼▼▼ この行が最も重要です ▼▼▼
-    // 勤怠一覧ページ（GET /admin/attendance）-> admin.attendance.index という名前を付ける
     Route::get('/attendance', [AdminAttendanceController::class, 'index'])->name('attendance.index');
-
-    // 勤怠詳細ページ（GET /admin/attendance/{attendance}）-> admin.attendance.show
+    // 勤怠詳細ページ
     Route::get('/attendance/{attendance}', [AdminAttendanceController::class, 'show'])->name('attendance.show');
 });

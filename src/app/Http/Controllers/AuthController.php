@@ -15,6 +15,9 @@ class AuthController extends Controller
 
     public function create()
     {
+        if (Auth::check()) {
+            return redirect('/admin/attendance');
+        }
         return view('auth.login');
     }
 

@@ -1,10 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', '日付別勤怠一覧')
 
 @section('css')
-{{-- ユーザー指定のCSSを読み込みます --}}
-<link rel="stylesheet" href="{{ asset('css/admin/attendances/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/attendances/index.css') }}">
 @endsection
 
 @section('content')
@@ -51,7 +50,6 @@
                     <td class="table-cell">{{ $attendance->total_break_time_formatted }}</td>
                     <td class="table-cell">{{ $attendance->total_work_time_formatted }}</td> {{-- ← 勤務時間のデータを表示 --}}
                     <td class="table-cell">
-                        {{-- 詳細ページへのリンクとして機能するように<a>タグに変更 --}}
                         <a href="{{-- route('admin.attendance.show', $attendance) --}}" class="detail__button-submit">詳細</a>
                     </td>
                 </tr>
@@ -69,17 +67,27 @@
 @section('js')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const datePicker = document.getElementById('date-picker');
+    const datePickerContainer = document.querySelector('.date-picker-container');
+    const datePickerInput = document.getElementById('date-picker');
 
-    // 日付ピッカーの値が変更されたら、その日付のページに移動する
-    // この機能だけあればOKです
-    datePicker.addEventListener('change', function() {
-        if (this.value) {
-            const baseUrl = "{{ route('admin.attendance.index') }}";
-            window.location.href = baseUrl + '?date=' + this.value;
-        }
-    });
+    if (datePickerContainer) {
+        datePickerContainer.addEventListener('click', function(e) {
+            if (e.target !== datePickerInput) {
+                datePickerInput.showPicker();
+            }
+        });
+    }
+
+    if (datePickerInput) {
+        datePickerInput.addEventListener('change', function() {
+            if (this.value) {
+                const baseUrl = "{{ route('admin.attendance.index') }}";
+                window.location.href = baseUrl + '?date=' + this.value;
+            }
+        });
+    }
 });
 </script>
+
 @endsection
 @endsection
