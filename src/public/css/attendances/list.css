@@ -167,3 +167,10 @@
 .attendance-table tbody tr:last-child td {
     border-bottom-width: 0;
 }
+
+.disabled-link {
+    color: #aaa;
+    /* 文字色を灰色に */
+    text-decoration: none;
+    /* 下線を消す */
+}

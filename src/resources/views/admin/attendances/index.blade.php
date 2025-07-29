@@ -48,14 +48,13 @@
                     <td class="table-cell">{{ $attendance->start_time ? \Carbon\Carbon::parse($attendance->start_time)->format('H:i') : 'N/A' }}</td>
                     <td class="table-cell">{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : 'N/A' }}</td>
                     <td class="table-cell">{{ $attendance->total_break_time_formatted }}</td>
-                    <td class="table-cell">{{ $attendance->total_work_time_formatted }}</td> {{-- ← 勤務時間のデータを表示 --}}
+                    <td class="table-cell">{{ $attendance->total_work_time_formatted }}</td>
                     <td class="table-cell">
-                        <a href="{{-- route('admin.attendance.show', $attendance) --}}" class="detail__button-submit">詳細</a>
+                        <a href="{{ route('admin.staff.detail', ['attendance' => $attendance->id]) }}" class="detail__button-submit">詳細</a>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    {{-- データがない場合は6列を結合してメッセージを表示 --}}
                     <td colspan="6">この日の勤怠データはありません。</td>
                 </tr>
                 @endforelse

@@ -81,7 +81,7 @@ class RequestRequest extends FormRequest
             'start_time.required'=>'勤務時間を入力してください',
             'end_time.required' =>'退勤時間を入力してください',
             'remarks.required'=>'備考を記入してください',
-            'remarks.max' => '備考は20時以内で入力してください',
+            'remarks.max' => '備考は20字以内で入力してください',
         ];
     }
 }

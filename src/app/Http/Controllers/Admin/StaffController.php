@@ -80,6 +80,13 @@ class StaffController extends Controller
         ));
     }
 
+    public function showDetail(Attendance $attendance)
+    {
+        $attendance->load('user', 'rests');
+
+        return view('admin.staff.detail', compact('attendance'));
+    }
+
     public function exportCsv(Request $request, User $staff): StreamedResponse
     {
         // 1. 月の決定

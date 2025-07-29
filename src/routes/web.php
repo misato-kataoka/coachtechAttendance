@@ -108,4 +108,7 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     Route::get('/attendance', [AdminAttendanceController::class, 'index'])->name('attendance.index');
     // 勤怠詳細ページ
     Route::get('/attendance/{attendance}', [AdminAttendanceController::class, 'show'])->name('attendance.show');
+    Route::get('/staff/detail/{attendance}', [App\Http\Controllers\Admin\StaffController::class, 'showDetail'])->name('staff.detail');
+    // 勤怠情報の上書き更新
+    Route::put('/attendances/{attendance}', [App\Http\Controllers\Admin\AttendanceController::class, 'update'])->name('attendance.update');
 });

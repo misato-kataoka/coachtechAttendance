@@ -3,10 +3,8 @@
 @section('title', 'スタッフ一覧')
 
 @section('css')
-    {{-- 必要であれば、このページ専用のCSSを読み込む --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/admin/staff_list.css') }}"> --}}
     <style>
-        /* 簡単なスタイルをここに直接記述します */
         .staff-table {
             width: 100%;
             border-collapse: collapse;
