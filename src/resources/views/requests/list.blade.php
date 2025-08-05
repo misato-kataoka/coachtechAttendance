@@ -27,7 +27,7 @@
                     <td>{{ $request->status_text }}</td>
                     <td>{{ $request->user->name }}</td>
                     <td>{{ $request->attendance->work_date }}</td>
-                    <td>{{ $request->reason }}</td>
+                    <td>{{ $request->remarks }}</td>
                     <td>{{ $request->created_at->format('Y-m-d H:i')}}</td>
                     <td class="table-cell">
                         <a href="{{ route('request.show', ['request_id' => $request->id]) }}" class="detail__button-submit">詳細</a>

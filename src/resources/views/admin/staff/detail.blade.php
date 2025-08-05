@@ -19,7 +19,6 @@
         </div>
     @endif
 
-    {{-- ここに、バリデーションエラーが一つでもあれば、その一覧を表示します --}}
     @if ($errors->any())
         <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 1rem; border: 1px solid #f5c6cb; border-radius: .25rem; margin-bottom: 1rem;">
             <strong>入力内容にエラーがあります。</strong>

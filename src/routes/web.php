@@ -7,6 +7,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\RequestController as AdminRequestController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -111,4 +112,10 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     Route::get('/staff/detail/{attendance}', [App\Http\Controllers\Admin\StaffController::class, 'showDetail'])->name('staff.detail');
     // 勤怠情報の上書き更新
     Route::put('/attendances/{attendance}', [App\Http\Controllers\Admin\AttendanceController::class, 'update'])->name('attendance.update');
+    // 申請一覧ページのルート
+    Route::get('/requests', [AdminRequestController::class, 'index'])->name('requests.index');
+    // 詳細ページへのルート
+    Route::get('/admin/requests/{request}', [AdminRequestController::class, 'show'])->name('requests.show');
+    // 申請を承認するためのルート
+    Route::patch('/admin/requests/{request}', [AdminRequestController::class, 'update'])->name('requests.update');
 });

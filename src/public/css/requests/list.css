@@ -20,6 +20,12 @@
     background-color: #374151;
 }
 
+.filter-nav__link.active {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #007bff;
+}
+
 .month-navigation {
     display: flex;
     justify-content: center;

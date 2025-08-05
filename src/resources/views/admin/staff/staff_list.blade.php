@@ -3,30 +3,12 @@
 @section('title', 'スタッフ一覧')
 
 @section('css')
-    {{-- <link rel="stylesheet" href="{{ asset('css/admin/staff_list.css') }}"> --}}
-    <style>
-        .staff-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .staff-table th, .staff-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .staff-table th {
-            background-color: #f2f2f2;
-        }
-        .pagination {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/admin/staff_list.css') }}">
 @endsection
 
 @section('content')
 <div class="container">
-    <h1 class="header-title">スタッフ一覧</h1>
+    <h1 class="detail-header">スタッフ一覧</h1>
 
     <div class="staff-list">
         <table class="staff-table">

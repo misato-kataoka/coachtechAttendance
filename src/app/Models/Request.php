@@ -11,8 +11,8 @@ class Request extends Model
 {
     use HasFactory;
 
-    const STATUS_PENDING = 0;   // 申請中
-    const STATUS_APPROVED = 1;  // 承認
+    const STATUS_PENDING = 0;   // 承認待ち
+    const STATUS_APPROVED = 1;  // 承認済み
     const STATUS_REJECTED = 2;  // 却下
 
     protected $fillable = [
@@ -43,9 +43,9 @@ class Request extends Model
     {
         switch ($this->status) {
             case self::STATUS_PENDING:
-                return '申請中';
+                return '承認待ち';
             case self::STATUS_APPROVED:
-                return '承認';
+                return '承認済み';
             case self::STATUS_REJECTED:
                 return '却下';
             default:

@@ -20,8 +20,8 @@ class CreateRequestsTable extends Migration
             $table->foreignIDFor(Attendance::class)->constrained()->onDelete('cascade');
             $table->time('corrected_start_time')->nullable();
             $table->time('corrected_end_time')->nullable();
-            $table->text('reason');
-            $table->integer('status')->comment('0:申請中,1:承認,2:却下');
+            $table->text('remarks');
+            $table->integer('status')->comment('0:承認待ち,1:承認済み,2:却下');
             $table->foreignID('approved_by')->nullable()->constrained('users')->onDelete('set null');
             $table->dateTime('approved_at')->nullable();
             $table->timestamps();

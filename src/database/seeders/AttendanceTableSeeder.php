@@ -56,7 +56,6 @@ class AttendanceTableSeeder extends Seeder
                     continue;
                 }
 
-                // 勤務開始・終了時刻をランダムに設定（addMinutesを使っているので元々分単位）
                 $startTime = $date->copy()->setTime(7, 30, 0)->addMinutes(rand(0, 150));
                 $endTime = $date->copy()->setTime(16, 30, 0)->addMinutes(rand(0, 210));
 
@@ -66,8 +65,6 @@ class AttendanceTableSeeder extends Seeder
                     'start_time' => $startTime,
                     'end_time' => $endTime,
                 ]);
-
-                // ▼▼▼ ここから休憩時間の計算ロジックを「分単位」に修正しました ▼▼▼
 
                 // 休憩時間（30分〜90分）を「分」で生成
                 $totalRestMinutes = rand(30, 90);
@@ -94,7 +91,6 @@ class AttendanceTableSeeder extends Seeder
                         'updated_at' => now(),
                     ]);
                 }
-                // ▲▲▲ 休憩時間の計算ロジック修正ここまで ▲▲▲
             }
         }
 
