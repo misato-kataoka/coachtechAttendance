@@ -9,6 +9,16 @@
     padding: 32px 16px;
 }
 
+.request-title {
+    position: relative;
+    padding-left: 40px;
+    text-align: left;
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: bold;
+    width: 100%;
+}
+
 .request-title::before {
     content: '';
     position: absolute;
@@ -51,7 +61,10 @@
 .request-table {
     width: 100%;
     border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
     text-align: center;
+    overflow: hidden;
 }
 
 .request-table th,
@@ -60,6 +73,60 @@
     padding: 8px;
 }
 
-.request-table th {
-    background-color: #f2f2f2;
+.request-table thead th {
+    background-color: white;
+    border-bottom: 2px solid #ddd;
+}
+
+.request-table tr th:first-child,
+.request-table tr td:first-child {
+    padding-left: 40px;
+}
+
+.request-table tr td:last-child {
+    padding-right: 40px;
+}
+
+.request-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.filter-nav {
+    display: flex;
+    width: 100%;
+    gap: 100px;
+    margin-top: 40px;
+    padding-left: 60px;
+    border-bottom: 3px solid #777777eb;
+    margin-bottom: 30px;
+}
+
+.filter-nav__link {
+    padding-bottom: 16px;
+    color: black;
+    text-decoration: none;
+    transition: color 0.2s, font-weight 0.2s;
+}
+
+.filter-nav__link:hover {
+    color: #636465;
+}
+
+.filter-nav__link.active {
+    color: black;
+    font-weight: bold;
+}
+
+@media (max-width: 850px) and(min-width: 768px) {
+    .request-container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+@media (max-width: 1540px) and(min-width: 1400px) {
+    .request-container {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
 }

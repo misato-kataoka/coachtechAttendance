@@ -9,14 +9,14 @@
     <h1 class="detail-header">勤怠詳細</h1>
 
     @if (session('success'))
-        <div class="alert alert-success" style="background-color: #c6f6d5; color: #22543d; padding: 1rem; border-radius: 0.25rem; margin-bottom: 1rem;">{{ session('success') }}</div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
     @if (session('error'))
-        <div class="alert alert-danger" style="background-color: #fed7d7; color: #822727; padding: 1rem; border-radius: 0.25rem; margin-bottom: 1rem;">{{ session('error') }}</div>
+        <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
     <div class="readonly-wrapper">
-        <table class="detail-table readonly">
+        <table class="detail-table">
             <tbody>
                 <tr>
                     <th>名前</th>
@@ -26,29 +26,46 @@
                     <th>日付</th>
                     <td>{{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y年n月j日') }}</td>
                 </tr>
-                <tr class="highlight-row">
-                <th>出勤・退勤</th>
-                <td>
-                    {{ \Carbon\Carbon::parse($request->corrected_start_time)->format('H:i') }} 〜
-                    {{ $request->corrected_end_time ? \Carbon\Carbon::parse($request->corrected_end_time)->format('H:i') : '変更なし' }}
-                </td>
+                <tr>
+                    <th>出勤・退勤</th>
+                    <td>
+                    @php
+                        // 申請された出勤時間があればそれを使い、なければ元の勤怠の出勤時間を使う
+                        $displayStartTime = $request->corrected_start_time ?? $request->attendance->start_time;
+
+                        // 申請された退勤時間があればそれを使い、なければ元の勤怠の退勤時間を使う
+                        $displayEndTime = $request->corrected_end_time ?? $request->attendance->end_time;
+                    @endphp
+                    {{ \Carbon\Carbon::parse($displayStartTime)->format('H:i') }}
+
+                    <span class="time-separator">〜</span>
+
+                    @if($displayEndTime)
+                        {{ \Carbon\Carbon::parse($displayEndTime)->format('H:i') }}
+                    @else
+                        {{-- 未退勤の場合に表示するテキスト（例: - や 未退勤 など） --}}
+                        -
+                    @endif
+                    </td>
                 </tr>
                 <tr>
                     <th>休憩</th>
                     <td>
-                    @if(isset($request->attendance->rests[0]))
-                        {{ \Carbon\Carbon::parse($request->attendance->rests[0]->start_time)->format('H:i') }} 〜
-                        {{ \Carbon\Carbon::parse($request->attendance->rests[0]->end_time)->format('H:i') }}
-                    @else
-                        休憩記録なし
-                    @endif
+                        @if(isset($request->attendance->rests[0]))
+                            {{ \Carbon\Carbon::parse($request->attendance->rests[0]->start_time)->format('H:i') }}
+                            <span class="time-separator">〜</span>
+                            {{ \Carbon\Carbon::parse($request->attendance->rests[0]->end_time)->format('H:i') }}
+                        @else
+                            休憩記録なし
+                        @endif
                     </td>
                 </tr>
                 <tr>
                     <th>休憩2</th>
                     <td>
                         @if(isset($request->attendance->rests[1]))
-                            {{ \Carbon\Carbon::parse($request->attendance->rests[1]->start_time)->format('H:i') }} 〜 
+                            {{ \Carbon\Carbon::parse($request->attendance->rests[1]->start_time)->format('H:i') }}
+                            <span class="time-separator">〜</span>
                             {{ \Carbon\Carbon::parse($request->attendance->rests[1]->end_time)->format('H:i') }}
                         @else
                             休憩記録なし
@@ -63,18 +80,17 @@
         </table>
     </div>
 
-    {{-- 管理者アクション（承認・却下） --}}
+    {{-- 承認・却下アクション --}}
     <div class="action-wrapper">
-        @if($request->status === 0) {{-- 承認待ちの場合のみボタン表示 --}}
+        @if($request->status === 0) {{-- 承認待ち --}}
             <form action="{{ route('admin.requests.update', $request) }}" method="POST" class="action-form">
                 @csrf
                 @method('PATCH')
-                <button type="submit" name="action" value="approve" class="submit-button" style="background-color: #48bb78;">承認</button>
+                <button type="submit" name="action" value="approve" class="submit-button button-approve">承認</button>
             </form>
-        @elseif($request->status === 1) {{-- 承認済みの場合 --}}
-            <p><span class="status-badge status-approved">この申請は承認済みです</span></p>
-        @elseif($request->status === 2) {{-- 却下済みの場合 --}}
-            <p><span class="status-badge status-rejected">この申請は却下済みです</span></p>
+
+        @elseif($request->status === 1) {{-- 承認済み --}}
+            <button type="button" class="submit-button button-approved" disabled>承認済み</button>
         @endif
     </div>
 </div>

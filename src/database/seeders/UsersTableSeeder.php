@@ -21,6 +21,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@coachtech.com',
             'password' => Hash::make('adminpass'),
             'is_admin' => 1,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -28,6 +29,7 @@ class UsersTableSeeder extends Seeder
             'email'     => 'reina.n@coachtech.com',
             'password'  => Hash::make('password123'),
             'is_admin' => 0,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -35,6 +37,7 @@ class UsersTableSeeder extends Seeder
             'email'     => 'tarou.y@coachtech.com',
             'password'  => Hash::make('password456'),
             'is_admin' => 0,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -42,6 +45,7 @@ class UsersTableSeeder extends Seeder
             'email'     => 'issei.m@coachtech.com',
             'password'  => Hash::make('password789'),
             'is_admin' => 0,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -49,6 +53,7 @@ class UsersTableSeeder extends Seeder
             'email'     => 'keikichi.y@coachtech.com',
             'password'  => Hash::make('password012'),
             'is_admin' => 0,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -56,6 +61,7 @@ class UsersTableSeeder extends Seeder
             'email'     => 'tomomi.a@coachtech.com',
             'password'  => Hash::make('password987'),
             'is_admin' => 0,
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -63,6 +69,7 @@ class UsersTableSeeder extends Seeder
             'email'     => 'norio.n@coachtech.com',
             'password'  => Hash::make('password654'),
             'is_admin' => 0,
+            'email_verified_at' => now(),
         ]);
     }
 }

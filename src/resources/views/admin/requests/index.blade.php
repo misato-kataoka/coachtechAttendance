@@ -15,7 +15,6 @@
             class="filter-nav__link {{ $statusFilter === 'pending' ? 'active' : '' }}">
             承認待ち
         </a>
-        <span class="mx-2">|</span>
         <a href="{{ route('admin.requests.index', ['status' => 'processed']) }}"
             class="filter-nav__link {{ $statusFilter !== 'pending' ? 'active' : '' }}">
             承認済み
@@ -27,7 +26,7 @@
             <tr>
                 <th>状態</th>
                 <th>名前</th>
-                <th>対象日</th>
+                <th>対象日時</th>
                 <th>申請理由</th>
                 <th>申請日時</th>
                 <th>詳細</th>
