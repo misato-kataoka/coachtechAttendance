@@ -114,10 +114,13 @@ class AttendanceController extends Controller
         $prevMonth = $currentDate->copy()->subMonth();
         $nextMonth = $currentDate->copy()->addMonth();
 
+        $userId = Auth::id();
+
         // 該当月の勤怠記録を、関連する休憩記録も一緒に取得
         $attendances = Attendance::with('rests')
+                                ->where('user_id', $userId)
                                 ->whereYear('work_date', $year)
-                                ->whereMonth('work_date', 'LIKE', $month . '%')
+                                ->whereMonth('work_date', $month)
                                 ->get()
                                 ->keyBy(function ($item) {
                                     return Carbon::parse($item->work_date)->format('j');
@@ -170,9 +173,15 @@ class AttendanceController extends Controller
 
     public function show($id)
     {
-        $attendance = Attendance::with(['rests', 'user'])->findOrFail($id);
+        $attendance = Attendance::with([
+            'rests',
+            'user',
+            'pendingRequest.requestedRests'
+            ])->findOrFail($id);
 
-        return view('attendances.show', ['attendance' => $attendance]);
+        return view('attendances.show', [
+            'attendance' => $attendance,
+        ]);
     }
 
     public function update(AttendanceRequest $request, $id)

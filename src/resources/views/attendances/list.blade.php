@@ -48,8 +48,9 @@
                             <td class="table-cell">{{ $day['totalRest'] }}</td>
                             <td class="table-cell">{{ $day['actualWork'] }}</td>
                             <td class="table-cell">
-                                <button class="detail__button-submit" type="button">詳細</button>
-                            </td>
+                                <a href="{{ route('attendance.show', ['id' => $day['attendance']->id]) }}" class="detail__button-submit">
+                                    詳細
+                                </a>
                         @else
                             {{-- 記録がない場合 --}}
                             <td class="table-cell">-</td>

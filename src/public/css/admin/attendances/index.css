@@ -1,19 +1,31 @@
 .container {
-    max-width: 1000px;
+    max-width: 1152px;
     margin: 40px auto;
     padding: 0;
     background-color: transparent;
 }
 
-/* === 「勤怠管理」のメインタイトル === */
 .header-title {
-    text-align: center;
-    font-size: 24px;
+    position: relative;
+    padding-left: 20px;
+    font-size: 28px;
+    line-height: 32px;
     font-weight: bold;
-    margin-bottom: 30px;
+    color: rgb(31 41 55);
+    margin-bottom: 24px;
 }
 
-/* === 日付ナビゲーション === */
+.header-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 90%;
+    background-color: #374151;
+}
+
 .date-navigation-area {
     display: flex;
     justify-content: center;
@@ -37,7 +49,6 @@
     background-color: #f0f0f0;
 }
 
-/* 中央の日付ピッカー全体 (labelタグ) */
 .date-picker-container {
     display: flex;
     align-items: center;
@@ -47,7 +58,6 @@
     background-color: #fff;
     border-radius: 5px;
     cursor: pointer;
-    /* クリックできることを示すカーソル */
 }
 
 .date-picker-container .calendar-icon {
@@ -63,7 +73,6 @@
 }
 
 .date-picker-input {
-    /* 要素を重ねるのをやめ、視覚的に完全に隠すための常套句(sr-onlyスタイル) */
     position: absolute;
     width: 1px;
     height: 1px;
@@ -76,8 +85,17 @@
 }
 
 /* === 勤怠テーブル === */
-.attendance-table {
+.attendance-table-wrapper {
     width: 100%;
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .table-header {

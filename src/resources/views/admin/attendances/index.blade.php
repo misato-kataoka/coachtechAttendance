@@ -29,8 +29,8 @@
 </div>
 
     {{-- 勤怠一覧テーブル --}}
-    <div class="attendance-table">
-        <table>
+    <div class="attendance-table-wrapper">
+        <table class="attendance-table">
             <thead>
                 <tr>
                     <th class="table-header">名前</th>

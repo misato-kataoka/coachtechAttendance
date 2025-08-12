@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attendance;
+use App\Models\RequestedRest;
 use App\Models\User;
 
 class Request extends Model
@@ -18,7 +19,7 @@ class Request extends Model
     protected $fillable = [
         'user_id',
         'attendance_id',
-        'reason',
+        'remarks',
         'corrected_start_time',
         'corrected_end_time',
         'status',
@@ -36,7 +37,7 @@ class Request extends Model
 
     public function approver()
     {
-        return $this->belongTo(User::class, 'approved_by');
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     public function getStatusTextAttribute()
@@ -51,5 +52,10 @@ class Request extends Model
             default:
                 return '不明';
         }
+    }
+
+    public function requestedRests()
+    {
+        return $this->hasMany(RequestedRest::class, 'request_id');
     }
 }

@@ -18,12 +18,10 @@ class RequestsTableSeeder extends Seeder
      */
     public function run()
     {
-        // 既存のデータをクリア
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         AttendanceRequest::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // 申請理由と時間変更のパターンを定義 (実際のカラム名に合わせる)
         $requestPatterns = [
             ['remarks' => '遅刻の為', 'type' => 'start_time', 'adjustment_hours' => 1],
             ['remarks' => '電車遅延の為', 'type' => 'start_time', 'adjustment_hours' => 2],
@@ -31,13 +29,10 @@ class RequestsTableSeeder extends Seeder
             ['remarks' => '私事都合にて', 'type' => 'end_time', 'adjustment_hours' => -3],
         ];
 
-        // 対象の一般ユーザー (ID: 2から7) を取得
         $users = User::whereBetween('id', [2, 7])->get();
 
         foreach ($users as $user) {
-            // ユーザーごとに2件の申請を作成
             for ($i = 0; $i < 2; $i++) {
-                // ユーザー自身の勤怠記録から、まだ申請に出していないものをランダムに1件取得
                 $attendance = Attendance::where('user_id', $user->id)
                                 ->whereNotNull('start_time')
                                 ->whereNotNull('end_time')
@@ -45,7 +40,7 @@ class RequestsTableSeeder extends Seeder
                                 ->inRandomOrder()
                                 ->first();
 
-                // 対象の勤怠記録が見つからなければ、次のループへ
+                // 対象の勤怠記録が見つからなければ、次へ
                 if (!$attendance) {
                     continue;
                 }
@@ -68,15 +63,14 @@ class RequestsTableSeeder extends Seeder
                     $correctedEndTime = $originalEndTime->addHours($pattern['adjustment_hours'])->format('H:i:s');
                 }
 
-                // データベースに申請レコードを作成 (実際のテーブル構造に完全一致)
+                // データベースに申請レコードを作成
                 AttendanceRequest::create([
                     'user_id'              => $user->id,
                     'attendance_id'        => $attendance->id,
                     'corrected_start_time' => $correctedStartTime,
                     'corrected_end_time'   => $correctedEndTime,
                     'remarks'              => $pattern['remarks'],
-                    'status'               => 0, // 0: 承認待ち
-                    // created_atとupdated_atはLaravelが自動で設定
+                    'status'               => 0,
                 ]);
             }
         }
