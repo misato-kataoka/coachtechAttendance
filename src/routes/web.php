@@ -78,7 +78,7 @@ Route::post('/stamp_correction_request/store', [RequestController::class, 'store
 //申請一覧ページのルート
 Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])
     ->middleware('auth')
-    ->name('request.list');
+    ->name('requests.list');
 Route::get('/stamp_correction_request/{request_id}', [RequestController::class, 'show'])
 ->middleware('auth')
 ->name('request.show');

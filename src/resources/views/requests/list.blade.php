@@ -10,6 +10,17 @@
         申請一覧
     </h2>
 
+    <nav class="filter-nav mb-3">
+        <a href="{{ route('requests.list', ['status' => 'pending']) }}"
+            class="filter-nav__link {{ $statusFilter === 'pending' ? 'active' : '' }}">
+            承認待ち
+        </a>
+        <a href="{{ route('requests.list', ['status' => 'processed']) }}"
+            class="filter-nav__link {{ $statusFilter !== 'pending' ? 'active' : '' }}">
+            承認済み
+        </a>
+    </nav>
+
     <table class="request-table">
         <thead>
             <tr>
