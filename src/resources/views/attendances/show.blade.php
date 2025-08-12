@@ -8,27 +8,39 @@
 <div class="detail-container">
     <h1 class="detail-header">勤怠詳細</h1>
 
-    @if (isset($attendance->pendingRequest))
     @php
-        $pendingRequest = $attendance->pendingRequest;
         $userName = $attendance->user->name ?? 'ユーザー不明';
         $workDate = \Carbon\Carbon::parse($attendance->work_date)->format('Y年n月j日');
-
-        $requestedStartTime = \Carbon\Carbon::parse($pendingRequest->corrected_start_time)->format('H:i');
-        $requestedEndTime = \Carbon\Carbon::parse($pendingRequest->corrected_end_time)->format('H:i');
-
-        $requestedRests = $pendingRequest->requestedRests;
-        $requestedRest1 = $requestedRests->get(0);
-        $requestedRest2 = $requestedRests->get(1);
-
-        $requestedRest1_start = isset($requestedRest1) ? \Carbon\Carbon::parse($requestedRest1->start_time)->format('H:i') : '---';
-        $requestedRest1_end = isset($requestedRest1) ? \Carbon\Carbon::parse($requestedRest1->end_time)->format('H:i') : '---';
-        $requestedRest2_start = isset($requestedRest2) ? \Carbon\Carbon::parse($requestedRest2->start_time)->format('H:i') : '---';
-        $requestedRest2_end = isset($requestedRest2) ? \Carbon\Carbon::parse($requestedRest2->end_time)->format('H:i') : '---';
     @endphp
 
+    @if (isset($attendance->pendingRequest))
+        @php
+            $pendingRequest = $attendance->pendingRequest;
+            $pendingRequest->load('requestedRests');
+
+            $displayStartTimeValue = $pendingRequest->corrected_start_time ?? $attendance->start_time;
+            $displayEndTimeValue = $pendingRequest->corrected_end_time ?? $attendance->end_time;
+
+            $displayStartTime = \Carbon\Carbon::parse($displayStartTimeValue)->format('H:i');
+            $displayEndTime = $displayEndTimeValue ? \Carbon\Carbon::parse($displayEndTimeValue)->format('H:i') : '---';
+
+            $originalRests = $attendance->rests;
+            $requestedRests = $pendingRequest->requestedRests;
+
+            $rest1_start_value = optional($requestedRests->get(0))->start_time ?? optional($originalRests->get(0))->start_time;
+            $rest1_end_value   = optional($requestedRests->get(0))->end_time   ?? optional($originalRests->get(0))->end_time;
+
+            $rest2_start_value = optional($requestedRests->get(1))->start_time ?? optional($originalRests->get(1))->start_time;
+            $rest2_end_value   = optional($requestedRests->get(1))->end_time   ?? optional($originalRests->get(1))->end_time;
+
+            $displayRest1_start = $rest1_start_value ? \Carbon\Carbon::parse($rest1_start_value)->format('H:i') : '---';
+            $displayRest1_end   = $rest1_end_value   ? \Carbon\Carbon::parse($rest1_end_value)->format('H:i')   : '---';
+            $displayRest2_start = $rest2_start_value ? \Carbon\Carbon::parse($rest2_start_value)->format('H:i') : '---';
+            $displayRest2_end   = $rest2_end_value   ? \Carbon\Carbon::parse($rest2_end_value)->format('H:i')   : '---';
+        @endphp
+
         <div class="readonly-wrapper">
-            <table class="detail-table readonly>
+            <table class="detail-table readonly">
                 <tbody>
                     <tr>
                         <th>名前</th>
@@ -40,15 +52,15 @@
                     </tr>
                     <tr>
                         <th>出勤・退勤</th>
-                        <td>{{ $requestedStartTime }} <span class="time-separator">〜</span> {{ $requestedEndTime }}</td>
+                        <td>{{ $displayStartTime }} <span class="time-separator">〜</span> {{ $displayEndTime }}</td>
                     </tr>
                     <tr>
                         <th>休憩</th>
-                        <td>{{ $requestedRest1_start }} <span class="time-separator">〜</span> {{ $requestedRest1_end }}</td>
+                        <td>{{ $displayRest1_start }} <span class="time-separator">〜</span> {{ $displayRest1_end }}</td>
                     </tr>
                     <tr>
                         <th>休憩2</th>
-                        <td>{{ $requestedRest2_start }} <span class="time-separator">〜</span> {{ $requestedRest2_end }}</td>
+                        <td>{{ $displayRest2_start }} <span class="time-separator">〜</span> {{ $displayRest2_end }}</td>
                     </tr>
                     <tr>
                         <th>備考</th>
