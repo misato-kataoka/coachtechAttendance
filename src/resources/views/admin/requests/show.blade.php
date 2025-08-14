@@ -15,6 +15,23 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
+    @php
+
+        $attendance = $request->attendance;
+        $originalRests = $attendance->rests;
+        $requestedRests = $request->requestedRests;
+
+        $displayStartTimeValue = $request->corrected_start_time ?? $attendance->start_time;
+        $displayEndTimeValue = $request->corrected_end_time ?? $attendance->end_time;
+
+        // 休憩1: 申請された休憩1があればそれを、なければ元の休憩1を使う
+        $displayRest1_start_value = optional($requestedRests->get(0))->start_time ?? optional($originalRests->get(0))->start_time;
+        $displayRest1_end_value   = optional($requestedRests->get(0))->end_time   ?? optional($originalRests->get(0))->end_time;
+        // 休憩2: 申請された休憩2があればそれを、なければ元の休憩2を使う
+        $displayRest2_start_value = optional($requestedRests->get(1))->start_time ?? optional($originalRests->get(1))->start_time;
+        $displayRest2_end_value   = optional($requestedRests->get(1))->end_time   ?? optional($originalRests->get(1))->end_time;
+    @endphp
+
     <div class="readonly-wrapper">
         <table class="detail-table">
             <tbody>
@@ -29,47 +46,25 @@
                 <tr>
                     <th>出勤・退勤</th>
                     <td>
-                    @php
-                        // 申請された出勤時間があればそれを使い、なければ元の勤怠の出勤時間を使う
-                        $displayStartTime = $request->corrected_start_time ?? $request->attendance->start_time;
-
-                        // 申請された退勤時間があればそれを使い、なければ元の勤怠の退勤時間を使う
-                        $displayEndTime = $request->corrected_end_time ?? $request->attendance->end_time;
-                    @endphp
-                    {{ \Carbon\Carbon::parse($displayStartTime)->format('H:i') }}
-
-                    <span class="time-separator">〜</span>
-
-                    @if($displayEndTime)
-                        {{ \Carbon\Carbon::parse($displayEndTime)->format('H:i') }}
-                    @else
-                        {{-- 未退勤の場合に表示するテキスト（例: - や 未退勤 など） --}}
-                        -
-                    @endif
+                        {{ $displayStartTimeValue ? \Carbon\Carbon::parse($displayStartTimeValue)->format('H:i') : '-' }}
+                        <span class="time-separator">〜</span>
+                        {{ $displayEndTimeValue ? \Carbon\Carbon::parse($displayEndTimeValue)->format('H:i') : '-' }}
                     </td>
                 </tr>
                 <tr>
                     <th>休憩</th>
                     <td>
-                        @if(isset($request->attendance->rests[0]))
-                            {{ \Carbon\Carbon::parse($request->attendance->rests[0]->start_time)->format('H:i') }}
-                            <span class="time-separator">〜</span>
-                            {{ \Carbon\Carbon::parse($request->attendance->rests[0]->end_time)->format('H:i') }}
-                        @else
-                            休憩記録なし
-                        @endif
+                        {{ $displayRest1_start_value ? \Carbon\Carbon::parse($displayRest1_start_value)->format('H:i') : '-' }}
+                        <span class="time-separator">〜</span>
+                        {{ $displayRest1_end_value ? \Carbon\Carbon::parse($displayRest1_end_value)->format('H:i') : '-' }}
                     </td>
                 </tr>
                 <tr>
                     <th>休憩2</th>
                     <td>
-                        @if(isset($request->attendance->rests[1]))
-                            {{ \Carbon\Carbon::parse($request->attendance->rests[1]->start_time)->format('H:i') }}
-                            <span class="time-separator">〜</span>
-                            {{ \Carbon\Carbon::parse($request->attendance->rests[1]->end_time)->format('H:i') }}
-                        @else
-                            休憩記録なし
-                        @endif
+                        {{ $displayRest2_start_value ? \Carbon\Carbon::parse($displayRest2_start_value)->format('H:i') : '-' }}
+                        <span class="time-separator">〜</span>
+                        {{ $displayRest2_end_value ? \Carbon\Carbon::parse($displayRest2_end_value)->format('H:i') : '-' }}
                     </td>
                 </tr>
                 <tr>

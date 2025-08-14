@@ -42,8 +42,12 @@ class RequestController extends Controller
 
     public function show(AttendanceRequest $request)
     {
-        $request->load(['user', 'attendance.rests']);
-        
+        $request->load([
+            'user',
+            'attendance.rests',
+            'requestedRests'
+        ]);
+
         return view('admin.requests.show', compact('request'));
     }
 

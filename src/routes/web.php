@@ -54,8 +54,8 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('dashboard');
     Route::post('/attendance/start', [AttendanceController::class, 'start'])->name('attendance.start');
     Route::post('/attendance/end', [AttendanceController::class, 'end'])->name('attendance.end');
-    Route::post('/break/start', [AttendanceController::class, 'breakStart'])->name('break.start');
-    Route::post('/break/end', [AttendanceController::class, 'breakEnd'])->name('break.end');
+    Route::post('/break/start', [AttendanceController::class, 'restStart'])->name('rest.start');
+    Route::post('/break/end', [AttendanceController::class, 'restEnd'])->name('rest.end');
 });
 
 //勤怠一覧画面へのルート
