@@ -107,41 +107,56 @@
                         <tr>
                             <th>出勤・退勤</th>
                             <td>
-                                <input type="time" name="start_time" value="{{ $startTime }}">
+                                <input type="time" name="start_time" value="{{ old('start_time', $startTime) }}">
                                 <span class="time-separator">〜</span>
-                                <input type="time" name="end_time" value="{{ $endTime }}">
-                            </td>
-                            <div class="form__error">
-                                    @error('attendance')
-                                        {{ $message }}
+                                <input type="time" name="end_time" value="{{ old('end_time', $endTime) }}">
+
+                                <div class="form__error">
+                                    @error('start_time')
+                                        <p>{{ $message }}</p>
                                     @enderror
-                            </div>
+
+                                    @error('end_time')
+                                        <p>{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th>休憩</th>
                             <td>
-                                <input type="time" name="rests[0][start_time]" value="{{ $rest1_start_formatted }}">
+                                <input type="time" name="rests[0][start_time]" value="{{ old('rests.0.start_time', $rest1_start_formatted) }}">
                                 <span class="time-separator">〜</span>
-                                <input type="time" name="rests[0][end_time]" value="{{ $rest1_end_formatted }}">
+                                <input type="time" name="rests[0][end_time]" value="{{ old('rests.0.end_time', $rest1_end_formatted) }}">
+
+                                <div class="form__error">
+                                    @error('rests.0.start_time')
+                                        <p>{{ $message }}</p>
+                                    @enderror
+
+                                    @error('rests.0.end_time')
+                                        <p>{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </td>
-                            <div class="form__error">
-                                @error('rest')
-                                    {{ $message }}
-                                @enderror
-                            </div>
                         </tr>
                         <tr>
                             <th>休憩2</th>
                             <td>
-                                <input type="time" name="rests[1][start_time]" value="{{ $rest2_start_formatted }}">
+                                <input type="time" name="rests[1][start_time]" value="{{ old('rests.1.start_time', $rest2_start_formatted) }}">
                                 <span class="time-separator">〜</span>
-                                <input type="time" name="rests[1][end_time]" value="{{ $rest2_end_formatted }}">
+                                <input type="time" name="rests[1][end_time]" value="{{ old('rests.1.end_time', $rest2_end_formatted) }}">
+
+                                <div class="form__error">
+                                    @error('rests.1.start_time')
+                                        <p>{{ $message }}</p>
+                                    @enderror
+
+                                    @error('rests.1.end_time')
+                                        <p>{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </td>
-                            <div class="form__error">
-                                @error('rest')
-                                    {{ $message }}
-                                @enderror
-                            </div>
                         </tr>
                         <tr>
                             <th>備考</th>

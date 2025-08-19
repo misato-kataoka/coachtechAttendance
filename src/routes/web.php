@@ -68,12 +68,8 @@ Route::middleware('auth', 'verified')->group(function () {
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/attendance/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
     Route::put('/attendance/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::post('/stamp_correction_request/store', [RequestController::class, 'store'])->name('request.store');
 });
-
-//申請内容を保存するためのルート
-Route::post('/stamp_correction_request/store', [RequestController::class, 'store'])
-    ->middleware('auth')
-    ->name('request.store');
 
 //申請一覧ページのルート
 Route::get('/stamp_correction_request/list', [RequestController::class, 'index'])

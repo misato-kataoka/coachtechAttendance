@@ -1,7 +1,7 @@
 .attendance-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     max-width: 1152px;
     margin-left: auto;
@@ -15,7 +15,12 @@
     line-height: 32px;
     font-weight: bold;
     color: rgb(31 41 55);
+    position: relative;
+    display: block;
     margin-bottom: 24px;
+    padding-left: 1rem;
+    align-self: flex-start;
+    width: 85%;
 }
 
 /*タイトルの前の縦棒*/
@@ -36,7 +41,7 @@
     justify-content: space-between;
     padding-left: 1rem;
     padding-right: 1rem;
-    width: 80%;
+    width: 85%;
     background-color: white;
     border-radius: 0.5rem;
     margin-bottom: 24px;

@@ -75,7 +75,7 @@
         </table>
     </div>
 
-    {{-- 承認・却下アクション --}}
+    {{-- 承認アクション --}}
     <div class="action-wrapper">
         @if($request->status === 0) {{-- 承認待ち --}}
             <form action="{{ route('admin.requests.update', $request) }}" method="POST" class="action-form">

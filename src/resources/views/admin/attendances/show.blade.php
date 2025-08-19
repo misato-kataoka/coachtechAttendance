@@ -9,13 +9,11 @@
     <h1 class="detail-header">勤怠詳細</h1>
 
     @php
-        // コントローラーから渡された表示用データを使います
-        // 表示フォーマットの整形はビューで行うのが一般的です
         $userName = $displayData['userName'];
         $workDate = \Carbon\Carbon::parse($displayData['workDate'])->format('Y年n月j日');
         $startTime = $displayData['startTime'] ? \Carbon\Carbon::parse($displayData['startTime'])->format('H:i') : '---';
         $endTime = $displayData['endTime'] ? \Carbon\Carbon::parse($displayData['endTime'])->format('H:i') : '---';
-        
+
         // 休憩時間の取得
         $rest1 = $displayData['rests']->get(0);
         $rest2 = $displayData['rests']->get(1);
@@ -25,9 +23,6 @@
         $rest2_end   = isset($rest2) ? \Carbon\Carbon::parse($rest2->end_time)->format('H:i') : '---';
     @endphp
 
-    {{-- ======================================================= --}}
-    {{-- 表示部分は、承認待ちでもそうでなくても、この一つだけ！ --}}
-    {{-- ======================================================= --}}
     <table class="detail-table">
         <tbody>
             <tr>
@@ -58,9 +53,6 @@
         </tbody>
     </table>
 
-    {{-- ======================================================= --}}
-    {{-- フォーム/メッセージの表示切り替えはここで行う --}}
-    {{-- ======================================================= --}}
     @if (isset($attendance->pendingRequest))
         <div class="form-actions">
             <p class="pending-message">承認待ちのため修正できません。</p>
@@ -68,8 +60,6 @@
     @else
         <form action="{{ route('request.store') }}" method="POST" class="detail-form">
             @csrf
-            {{-- 修正フォームの中身は以前のものと同じでOK --}}
-            {{-- ... inputタグなどを配置 ... --}}
             <button type="submit" class="submit-button">修正</button>
         </form>
     @endif
