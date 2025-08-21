@@ -48,7 +48,7 @@ class AttendanceController extends Controller
     public function show(Attendance $attendance)
     {
         $attendance->load('user', 'rests');
-        return view('admin.staff.detail', compact('attendance'));
+        return view('admin.requests.show', compact('attendance'));
     }
 
     public function update(AttendanceRequest $request, Attendance $attendance)

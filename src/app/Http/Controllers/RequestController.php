@@ -13,29 +13,22 @@ class RequestController extends Controller
 {
     public function index(HttpRequest $request)
     {
-        // 1. URLのクエリパラメータから 'status' を取得（なければ 'pending' をデフォルト値とする）
         $statusFilter = $request->query('status', 'pending');
 
-        // 2. 現在ログインしているユーザーの申請(request)をベースにクエリを開始
         $query = Auth::user()->requests()
             ->with(['user', 'attendance'])
             ->latest();
 
-        // 3. statusFilter の値に応じて、表示するデータを絞り込む
         if ($statusFilter === 'pending') {
-            //「承認待ち」タブが選択された場合
-            $query->where('status', AttendanceRequest::STATUS_PENDING); // ステータスが0
+            $query->where('status', AttendanceRequest::STATUS_PENDING);
         } else {
-            //「承認済みタブが選択された場合
             $query->whereIn('status', [
-                AttendanceRequest::STATUS_APPROVED, // ステータスが1 (承認)
+                AttendanceRequest::STATUS_APPROVED,
             ]);
         }
 
-        // 4. クエリを実行し、結果を15件ずつページ分割する
         $requests = $query->paginate(15);
 
-        // 5. 取得したデータと、現在のフィルター状態をビューに渡す
         return view('requests.list', [
             'requests' => $requests,
             'statusFilter' => $statusFilter

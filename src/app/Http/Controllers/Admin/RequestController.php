@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Request as AttendanceRequest;
 use App\Models\Request;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
@@ -15,11 +17,9 @@ class RequestController extends Controller
      */
     public function index(HttpRequest $httpRequest)
     {
-        // 表示するステータスを取得 (URLの ?status=... から)
-        // 指定がなければデフォルトで 'pending' (承認待ち) を表示
+
         $statusFilter = $httpRequest->query('status', 'pending');
 
-        // Requestモデルからグローバルスコープを一時的に解除してクエリを開始
         $query = AttendanceRequest::withoutGlobalScopes()->with(['user', 'attendance'])->latest();
 
         if ($statusFilter === 'pending') {
@@ -30,13 +30,11 @@ class RequestController extends Controller
             $query->whereIn('status', [1, 2]); // ステータスが1(承認)または2(却下)のものを絞り込み
         }
 
-        // ページネーションを付けてデータを取得 (1ページあたり15件)
         $requests = $query->paginate(15);
 
-        // ビューに応答を返す
         return view('admin.requests.index', [
             'requests' => $requests,
-            'statusFilter' => $statusFilter // 現在のフィルタ状態をビューに渡す
+            'statusFilter' => $statusFilter
         ]);
     }
 
@@ -61,20 +59,63 @@ class RequestController extends Controller
 
         $action = $httpRequest->input('action');
 
-        if ($action === 'approve') {
-            $request->status = 1; // 1: 承認済み
-            $message = '申請を承認しました。';
-        } elseif ($action === 'reject') {
-            $request->status = 2; // 2: 却下
-            $message = '申請を却下しました。';
-        } else {
-            return redirect()->route('admin.requests.show', $request)
-                ->with('error', '無効な操作です。');
+        DB::beginTransaction();
+        try {
+            if ($action === 'approve') {
+                // 1. 元の勤怠レコードを取得
+                $attendance = $request->attendance;
+
+                // 2. 勤怠本体（出退勤時刻）を更新
+                $attendance->start_time = $request->corrected_start_time ?? $attendance->start_time;
+                $attendance->end_time = $request->corrected_end_time ?? $attendance->end_time;
+                $attendance->save();
+
+                // 3. 休憩時間(Rests)を更新
+                // 3-1. 元の休憩データをすべて削除
+                $attendance->rests()->delete();
+
+                // 3-2. 申請された休憩データをループで新しく作成
+                foreach ($request->requestedRests as $requestedRest) {
+                    // 申請された休憩データが存在する場合のみ作成
+                    if ($requestedRest->start_time && $requestedRest->end_time) {
+                        $attendance->rests()->create([
+                            'start_time' => $requestedRest->start_time,
+                            'end_time' => $requestedRest->end_time,
+                        ]);
+                    }
+                }
+
+                // 4. 申請(Request)自体のステータスを更新
+                $request->status = 1; // 承認済み
+                $request->approved_by = Auth::id();
+                $request->approved_at = now();
+                $request->save();
+
+                // 5. すべてのDB操作が成功したので、変更を確定
+                DB::commit();
+
+                return redirect()->route('admin.requests.show', $request)->with('success', '申請を承認し、勤怠データを更新しました。');
+
+            } elseif ($action === 'reject') {
+                // === 却下処理 ===
+                // 却下の場合は勤怠データは更新せず、申請ステータスのみ変更
+                $request->status = 2; // 却下
+                $request->approved_by = Auth::id();
+                $request->approved_at = now();
+                $request->save();
+
+                DB::commit();
+
+                return redirect()->route('admin.requests.show', $request)->with('success', '申請を却下しました。');
+            } else {
+                DB::rollBack();
+                return redirect()->route('admin.requests.show', $request)->with('error', '無効な操作です。');
+            }
+
+        } catch (\Exception $e) {
+            // 6. 途中でエラーが起きたら、全ての変更を元に戻す
+            DB::rollBack();
+            return redirect()->route('admin.requests.show', $request)->with('error', '処理中にエラーが発生しました。');
         }
-
-        $request->save();
-
-        return redirect()->route('admin.requests.show', $request)
-            ->with('success', $message);
     }
 }

@@ -18,13 +18,11 @@ class AttendanceTableSeeder extends Seeder
      */
     public function run()
     {
-        // 外部キー制約を一時的に無効化し、テーブルを空にする
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Attendance::truncate();
         DB::table('rests')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // --- 設定項目 ---
         $userIds = range(2, 7);
         $period = CarbonPeriod::create('2025-03-01', '2025-06-30');
         // ----------------

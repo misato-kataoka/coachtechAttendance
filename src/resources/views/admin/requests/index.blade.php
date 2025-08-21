@@ -36,7 +36,7 @@
             @forelse ($requests as $request)
                 <tr>
                     <td>{{ $request->status_text }}</td>
-                    <td>{{ $request->user->name }}</td>
+                    <td>{{ $request->attendance->user->name }}</td>
                     <td>{{ $request->attendance->work_date }}</td>
                     <td>{{ $request->remarks }}</td>
                     <td>{{ $request->created_at->format('Y-m-d H:i')}}</td>

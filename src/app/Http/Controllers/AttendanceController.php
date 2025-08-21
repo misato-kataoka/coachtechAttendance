@@ -116,7 +116,6 @@ class AttendanceController extends Controller
 
         $userId = Auth::id();
 
-        // 該当月の勤怠記録を、関連する休憩記録も一緒に取得
         $attendances = Attendance::with('rests')
                                 ->where('user_id', $userId)
                                 ->whereYear('work_date', $year)

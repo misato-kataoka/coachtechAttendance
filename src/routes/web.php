@@ -85,11 +85,11 @@ Route::post('/requests/{request}/reject', [RequestController::class, 'reject'])-
 
 //【グループ1】管理者認証ルート
 Route::prefix('admin')->name('admin.')->group(function () {
-    // ログイン画面表示（GET /admin/login）-> admin.login
+    // ログイン画面表示
     Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
     // ログイン処理（POST /admin/login）
     Route::post('/login', [AdminLoginController::class, 'login']);
-    // ログアウト処理（POST /admin/logout）-> admin.logout
+    // ログアウト処理
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
     //スタッフ一覧表示
     Route::get('/staff', [App\Http\Controllers\Admin\StaffController::class, 'index'])->name('staff.index');
