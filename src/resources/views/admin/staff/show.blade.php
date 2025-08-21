@@ -64,13 +64,14 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="csv-export-wrapper" style="text-align: right; margin-top: 20px;">
+            <form action="{{ route('admin.staff.exportCsv', ['staff' => $staff->id]) }}" method="GET">
+                <input type="hidden" name="month" value="{{ $currentDate->format('Y-m') }}">
+                <button type="submit" class="csv-export-button">CSV出力</button>
+            </form>
+        </div>
     </div>
 </div>
 
-<div class="csv-export-wrapper" style="text-align: right; margin-top: 20px;">
-    <form action="{{ route('admin.staff.exportCsv', ['staff' => $staff->id]) }}" method="GET">
-        <input type="hidden" name="month" value="{{ $currentDate->format('Y-m') }}">
-        <button type="submit" class="csv-export-button" style="padding: 10px 20px; font-size: 16px;">CSV出力</button>
-    </form>
-</div>
 @endsection
