@@ -61,6 +61,10 @@ MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください。
 * **Email:** 'tarou.y@coachtech.com'
 * **password:** 'password456'
 
+* **名前:** '管理者'
+* **Email:** 'admin@coachtech.com'
+* **password:** 'adminpass'
+
 ## 使用技術
 
 -php 7.4.9
