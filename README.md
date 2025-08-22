@@ -85,22 +85,18 @@ MAIL_FROM_ADDRESS は任意のメールアドレスを入力してください�
 - **password:** 'adminpass'
 - **管理者ログインページ URL:** 'http://localhost/admin/login'
 
-* **名前:** '管理者'
-* **Email:** 'admin@coachtech.com'
-* **password:** 'adminpass'
-
 ## 使用技術
 
--php 7.4.9
+- php 7.4.9
 
--Laravel (v8.6.12)
+- Laravel (v8.6.12)
 
--MySQL 8.0.26
+- MySQL 8.0.26
 
--Docker
+- Docker
 
 ## URL
 
--開発環境 http://localhost/
+- 開発環境 http://localhost/
 
--phpMyAdmin http://localhost:8080
+- phpMyAdmin http://localhost:8080
