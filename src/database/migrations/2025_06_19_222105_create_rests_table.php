@@ -20,6 +20,8 @@ class CreateRestsTable extends Migration
             $table->time('end_time')->nullable();
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE rests ADD CONSTRAINT rests_end_time_check CHECK (end_time IS NULL OR end_time > start_time)');
     }
 
     /**

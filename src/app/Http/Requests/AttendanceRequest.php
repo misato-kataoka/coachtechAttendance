@@ -23,22 +23,25 @@ class AttendanceRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'start_time' => ['required', 'date_format:H:i'],
+        $rules = [
+            'start_time' => ['required', 'date_format:H:i', 'before:end_time'],
             'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
-            'remarks' => ['required', 'string', 'max:20'],
+            'remarks' => ['required', 'string', 'max:255'],
             'rests' => ['nullable', 'array'],
             'rests.*.id' => ['nullable', 'integer', 'exists:rests,id'],
             'rests.*.start_time' => [
                 'nullable',
                 'required_with:rests.*.end_time',
-                'date_format:H:i'
+                'date_format:H:i',
+                'after:start_time',
+                'before:end_time',
             ],
             'rests.*.end_time' => [
                 'nullable',
                 'required_with:rests.*.start_time',
                 'date_format:H:i',
-                'after:rests.*.start_time'
+                'after:rests.*.start_time',
+                'before:end_time',
             ],
         ];
 
@@ -56,6 +59,17 @@ class AttendanceRequest extends FormRequest
      */
     public function messages()
     {
+        if ($this->routeIs('admin.*')) {
+            // 管理者用の統一されたエラーメッセージを返す
+            $message = '出勤時間もしくは退勤時間が不適切な値です';
+            return [
+                'end_time.after'            => $message,
+                'rests.*.start_time.after'  => $message,
+                'rests.*.start_time.before' => $message,
+                'rests.*.end_time.before'   => $message,
+            ];
+        }
+
         return [
             'start_time.required' => '出勤時間を入力してください。',
             'start_time.date_format' => '出勤時間は「HH:mm」の形式で入力してください。',
@@ -70,10 +84,13 @@ class AttendanceRequest extends FormRequest
 
             'rests.*.start_time.required_with' => '休憩の終了時間を入力する場合は、開始時間も入力してください。',
             'rests.*.start_time.date_format' => '休憩の開始時間は「HH:mm」の形式で入力してください。',
+            'rests.*.start_time.after'  => '休憩時間が不適切な値です。',
+            'rests.*.start_time.before' => '休憩時間が不適切な値です。',
 
+            'rests.*.end_time.before'   => '休憩時間は勤務時間内に設定してください。',
             'rests.*.end_time.required_with' => '休憩の開始時間を入力する場合は、終了時間も入力してください。',
             'rests.*.end_time.date_format' => '休憩の終了時間は「HH:mm」の形式で入力してください。',
-            'rests.*.end_time.after' => '休憩の終了時間は、その休憩の開始時間より後の時刻を指定してください。',
+            'rests.*.end_time.after' => '出勤時間もしくは退勤時間が不適切な値です。',
         ];
     }
 }

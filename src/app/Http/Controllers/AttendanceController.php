@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Attendance;
+use App\Models\Request as EloquentRequest;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\Rest;
 use Carbon\Carbon;
@@ -185,6 +188,41 @@ class AttendanceController extends Controller
 
     public function update(AttendanceRequest $request, $id)
     {
-        dd($request->all());
+        $attendance = Attendance::findOrFail($id);
+
+        $workDate = $attendance->work_date->format('Y-m-d');
+
+    try {
+        DB::beginTransaction();
+
+        $newRequest = EloquentRequest::create([
+            'user_id' => Auth::id(),
+            'attendance_id' => $attendance->id,
+            'corrected_start_time' => $workDate . ' ' . $request->input('start_time'),
+            'corrected_end_time'   => $workDate . ' ' . $request->input('end_time'),
+            'remarks' => $request->input('remarks'),
+            'status' => \App\Models\Request::STATUS_PENDING,
+        ]);
+
+        if ($request->has('rests')) {
+            foreach ($request->input('rests') as $restData) {
+                if (!empty($restData['start_time']) && !empty($restData['end_time'])) {
+                    $newRequest->requestedRests()->create([
+                        'start_time' => $restData['start_time'],
+                        'end_time' => $restData['end_time'],
+                    ]);
+                }
+            }
+        }
+
+        DB::commit();
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', '申請処理中にエラーが発生しました。');
     }
+
+    return redirect()->route('attendance.show', $id)
+                    ->with('success', '勤怠修正の申請を送信しました。');
+}
 }

@@ -93,6 +93,7 @@ class RequestController extends Controller
                 if (!empty($restData['start_time']) && !empty($restData['end_time'])) {
                     RequestedRest::create([
                         'request_id' => $newRequest->id,
+                        'action' => RequestedRest::ACTION_ADD,
                         'start_time' => $restData['start_time'],
                         'end_time' => $restData['end_time'],
                     ]);

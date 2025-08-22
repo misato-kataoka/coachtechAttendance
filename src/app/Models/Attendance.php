@@ -20,6 +20,12 @@ class Attendance extends Model
         'end_time',
     ];
 
+    protected $casts = [
+        'work_date' => 'date',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     /**
      */
     public function user()

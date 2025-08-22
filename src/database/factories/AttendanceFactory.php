@@ -14,7 +14,12 @@ class AttendanceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'start_time' => $this->faker->dateTimeThisMonth(),
+            'end_time' => null,
+            'work_date' => function (array $attributes) {
+                return \Carbon\Carbon::parse($attributes['start_time'])->toDateString();
+            },
         ];
     }
 }

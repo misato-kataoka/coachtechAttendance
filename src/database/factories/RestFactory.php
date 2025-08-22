@@ -14,7 +14,9 @@ class RestFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'attendance_id' => \App\Models\Attendance::factory(),
+            'start_time' => $this->faker->dateTimeThisMonth(),
+            'end_time' => null,
         ];
     }
 }

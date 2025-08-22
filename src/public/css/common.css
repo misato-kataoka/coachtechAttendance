@@ -50,7 +50,6 @@ body {
 
 .header-nav__link:hover {
     color: rgb(238, 201, 201);
-    /* ホバー時の文字色 */
 }
 
 .header-nav__button {
@@ -64,7 +63,6 @@ body {
 
 .header-nav__button:hover {
     background-color: rgb(238, 201, 201);
-    /* ホバー時の背景色 */
 }
 
 @media (max-width: 850px) {

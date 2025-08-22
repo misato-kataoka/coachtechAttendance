@@ -37,7 +37,7 @@ class LoginController extends Controller
                 $request->session()->regenerate();
 
                 // 管理者勤怠一覧ページへリダイレクト
-                return redirect()->intended(route('admin.attendance.index'));
+                return redirect()->intended(route('admin.attendances.index'));
             }
 
             // 4. 管理者でなければログアウトさせ、エラーを返す

@@ -14,14 +14,12 @@ body {
 @media (min-width: 1400px) and (max-width: 1540px) {
     .container {
         width: 80%;
-        /* 1400px以上1540px未満の時の幅 */
     }
 }
 
 @media (min-width: 768px) and (max-width: 850px) {
     .container {
         width: 90%;
-        /* タブレット用の幅 */
     }
 }
 
@@ -78,10 +76,8 @@ input {
 .login-link a {
     color: #007bff;
     text-decoration: none;
-    /* 下線を消す */
 }
 
 .login-link a:hover {
     text-decoration: underline;
-    /* ホバー時に下線を追加 */
 }

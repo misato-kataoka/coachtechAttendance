@@ -16,6 +16,8 @@ class CreateRequestedRestsTable extends Migration
         Schema::create('requested_rests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('request_id')->constrained()->onDelete('cascade');
+            $table->tinyInteger('action');
+            $table->foreignId('original_rest_id')->nullable()->constrained('rests')->onDelete('set null');
             $table->time('start_time');
             $table->time('end_time');
             $table->timestamps();

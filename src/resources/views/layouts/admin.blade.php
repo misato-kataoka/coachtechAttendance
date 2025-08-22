@@ -22,7 +22,7 @@
                 <ul class="header-nav">
                     @if (Auth::check())
                     <li>
-                        <a class="header-nav__link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a>
+                        <a class="header-nav__link" href="{{ route('admin.attendances.index') }}">勤怠一覧</a>
                     </li>
                     <li>
                         <a class="header-nav__link" href="{{ route('admin.staff.index') }}">スタッフ一覧</a>

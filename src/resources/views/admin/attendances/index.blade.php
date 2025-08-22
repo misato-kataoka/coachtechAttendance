@@ -12,7 +12,7 @@
 
 <div class="date-navigation-area">
     <!-- 前日へのリンク -->
-    <a href="{{ route('admin.attendance.index', ['date' => $prevDay]) }}" class="date-nav-arrow">← 前日</a>
+    <a href="{{ route('admin.attendances.index', ['date' => $prevDay]) }}" class="date-nav-arrow">← 前日</a>
 
     <label for="date-picker" class="date-picker-container">
         <img src="{{ asset('storage/images/calendar.png') }}" alt="カレンダーから選択" class="calendar-icon">
@@ -25,7 +25,7 @@
     </label>
 
     <!-- 翌日へのリンク -->
-    <a href="{{ route('admin.attendance.index', ['date' => $nextDay]) }}" class="date-nav-arrow">翌日 →</a>
+    <a href="{{ route('admin.attendances.index', ['date' => $nextDay]) }}" class="date-nav-arrow">翌日 →</a>
 </div>
 
     {{-- 勤怠一覧テーブル --}}
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (datePickerInput) {
         datePickerInput.addEventListener('change', function() {
             if (this.value) {
-                const baseUrl = "{{ route('admin.attendance.index') }}";
+                const baseUrl = "{{ route('admin.attendances.index') }}";
                 window.location.href = baseUrl + '?date=' + this.value;
             }
         });

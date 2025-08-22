@@ -35,7 +35,6 @@
             </tr>
             <tr>
                 <th>出勤・退勤</th>
-                {{-- 承認待ちの場合、修正箇所が分かるようにCSSで印をつけるとなお良い --}}
                 <td>{{ $startTime }} <span class="time-separator">〜</span> {{ $endTime }}</td>
             </tr>
             <tr>

@@ -102,12 +102,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 //【グループ2】管理者向け勤怠管理ルート（要ログイン）
 Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/attendance', [AdminAttendanceController::class, 'index'])->name('attendance.index');
-    // 勤怠詳細ページ
-    Route::get('/attendance/{attendance}', [AdminAttendanceController::class, 'show'])->name('attendance.show');
+    Route::resource('attendances', AdminAttendanceController::class)->only(['index', 'show', 'update']);
     Route::get('/staff/detail/{attendance}', [App\Http\Controllers\Admin\StaffController::class, 'showDetail'])->name('staff.detail');
-    // 勤怠情報の上書き更新
-    Route::put('/attendances/{attendance}', [App\Http\Controllers\Admin\AttendanceController::class, 'update'])->name('attendance.update');
     // 申請一覧ページのルート
     Route::get('/requests', [AdminRequestController::class, 'index'])->name('requests.index');
     // 詳細ページへのルート
